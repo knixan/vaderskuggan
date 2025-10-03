@@ -256,7 +256,7 @@ export default async function Page({
               Molnigt med en chans till sol och eftertanke
             </div>
             <div style={{ fontSize: "14px", opacity: 0.9 }}>
-              Din dagliga dos meteorologisk besvikelse.
+              Din dagliga dos av meteorologisk besvikelse.
             </div>
           </div>
 
