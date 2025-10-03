@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 
 type Props = {
@@ -7,33 +6,53 @@ type Props = {
   summary?: string;
 };
 
+// Enkel deterministisk hash för att välja kommentar utan Math.random
+function hashString(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = (h << 5) - h + s.charCodeAt(i);
+    h |= 0;
+  }
+  return Math.abs(h);
+}
+
+function pickDeterministic(arr: string[], seed: string) {
+  if (!arr || arr.length === 0) return "";
+  return arr[hashString(seed) % arr.length];
+}
+
 function pickComment(temp?: number | null, summary?: string): string {
   const s = (summary ?? "").toLowerCase();
-
-  const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const seed = `${s}|${String(temp ?? "")}`;
 
   // Åska / storm
   if (s.includes("thunder") || s.includes("storm")) {
-    return pick([
-      "Åskväder: naturens stora pyrotekniska show — från soffan är den bäst.",
-      "Åska och blixtar: perfekt tid att låtsas vara åskledare (skojigt, men gör det inte på riktigt).",
-      "Blixtrar: gratis ljusshow. Rekommendation — titta genom fönstret, stanna inomhus.",
-      "Stormvarning: evig ursäkt för att stanna hemma och skylla på vädret.",
-    ]);
+    return pickDeterministic(
+      [
+        "⛈️ Åskväder: naturens stora pyrotekniska show — från soffan är den bäst.",
+        "⚡ Åska och blixtar: perfekt tid att låtsas vara åskledare (skojigt, men gör det inte på riktigt).",
+        "⚡ Blixtrar: gratis ljusshow. Rekommendation — titta genom fönstret, stanna inomhus.",
+        "🌩️ Stormvarning: evig ursäkt för att stanna hemma och skylla på vädret.",
+      ],
+      seed
+    );
   }
 
-  // Kraftig regn
+  // Kraftigt regn
   if (
-    s.includes("heavy rain") ||
+    (s.includes("heavy") && s.includes("rain")) ||
     s.includes("downpour") ||
     (s.includes("rain") && s.includes("heavy"))
   ) {
-    return pick([
-      "Regn: dags att testa om dina skor flyter — tips: de gör det inte.",
-      "Skyfall: om du tänkt ta bilen kanske en segelbåt varit bättre plan.",
-      "Hällregn: perfekt väder för att bli blöt och vinna inga priser för stil.",
-      "Regn och dramatik — ta med dramatisk blick och en vattentät attitude.",
-    ]);
+    return pickDeterministic(
+      [
+        "🌧️ Regn: dags att testa om dina skor flyter — tips: de gör det inte.",
+        "⛵ Skyfall: om du tänkt ta bilen kanske en segelbåt varit bättre plan.",
+        "💦 Hällregn: perfekt väder för att bli blöt och vinna inga priser för stil.",
+        "🌧️ Regn och dramatik — ta med dramatisk blick och en vattentät attitude.",
+      ],
+      seed
+    );
   }
 
   // Lätt regn / duggregn
@@ -42,11 +61,14 @@ function pickComment(temp?: number | null, summary?: string): string {
     s.includes("light rain") ||
     s.includes("shower")
   ) {
-    return pick([
-      "Duggregn: naturens subtila kommentar till dina morgonplaner.",
-      "Små regndroppar: paraplyet känns överdrivet, men du kommer ångra dig om du skippat det.",
-      "Lätt regn: perfekt ursäkt att sakta ner — eller ta en roddbåt till jobbet.",
-    ]);
+    return pickDeterministic(
+      [
+        "🌦️ Duggregn: naturens subtila kommentar till dina morgonplaner.",
+        "☔ Små regndroppar: paraplyet känns överdrivet, men du kommer ångra dig om du skippat det.",
+        "🌧️ Lätt regn: perfekt ursäkt att sakta ner — eller ta en roddbåt till jobbet.",
+      ],
+      seed
+    );
   }
 
   // Snö / halka
@@ -56,122 +78,164 @@ function pickComment(temp?: number | null, summary?: string): string {
     s.includes("blizzard") ||
     s.includes("slush")
   ) {
-    return pick([
-      "Snö: marken får ny personlighet. Ditt skosamling får panik.",
-      "Snökaos: plogbilar bestämmer vägens kurs, inte du.",
-      "Vitt och kallt — perfekta förutsättningar att tappa bort vantarna och skylla på vädret.",
-    ]);
+    return pickDeterministic(
+      [
+        "❄️ Snö: marken får ny personlighet. Ditt skosamling får panik.",
+        "☃️ Snökaos: plogbilar bestämmer vägens kurs, inte du.",
+        "🥶 Vitt och kallt — perfekta förutsättningar att tappa bort vantarna och skylla på vädret.",
+      ],
+      seed
+    );
   }
 
   // Hagel
   if (s.includes("hail")) {
-    return pick([
-      "Hagel: stenig nedkylning från himlen — parkera bilen under tak om du kan.",
-      "Hagelstorm: när vädret tränar för en actionfilm.",
-    ]);
+    return pickDeterministic(
+      [
+        "🧊 Hagel: stenig nedkylning från himlen — parkera bilen under tak om du kan.",
+        "⚒️ Hagelstorm: när vädret tränar för en actionfilm.",
+      ],
+      seed
+    );
   }
 
   // Dimma / dis
   if (s.includes("fog") || s.includes("mist") || s.includes("haze")) {
-    return pick([
-      "Dimma: när världen plötsligt får filter — mysigt tills du kör bil.",
-      "Dis: perfekt för mystisk promenad eller att försvinna i vardagens tristess.",
-    ]);
+    return pickDeterministic(
+      [
+        "🌫️ Dimma: när världen plötsligt får filter — mysigt tills du kör bil.",
+        "🌁 Dis: perfekt för mystisk promenad eller att försvinna i vardagens tristess.",
+      ],
+      seed
+    );
   }
 
-  // Klar / soligt
+  // Klar / soligt (temperaturberoende)
   if (s.includes("clear") || s.includes("sunny") || s.includes("sun")) {
     if (typeof temp === "number") {
       if (temp >= 30)
-        return pick([
-          "Hettsol: fritt fram för svettiga planer och smältande ambitioner.",
-          "Extrem värme: glass är inte en rekommendation, det är en livsstil.",
-        ]);
+        return pickDeterministic(
+          [
+            "🔥 Hettsol: fritt fram för svettiga planer och smältande ambitioner.",
+            "🍦 Extrem värme: glass är inte rekommendation, det är en livsstil.",
+          ],
+          seed
+        );
       if (temp >= 25)
-        return pick([
-          "Soligt och varmt: perfekt för att undvika ansvar och dricka något kallt.",
-          "Sol och värme — eller som vi kallar det: svettig optimism.",
-        ]);
+        return pickDeterministic(
+          [
+            "🌞 Soligt och varmt: perfekt för att undvika ansvar och dricka något kallt.",
+            "😅 Sol och värme — svettig optimism.",
+          ],
+          seed
+        );
       if (temp >= 20)
-        return pick([
-          "Härligt ute — låtsas att du har en picknick och tja, kanske gör du det.",
-          "Milt och soligt: bra väder att bli produktiv eller prokrastinera med stil.",
-        ]);
+        return pickDeterministic(
+          [
+            "🧺 Härligt ute — låtsas att du har en picknick.",
+            "🌤️ Milt och soligt: prokrastinera med stil.",
+          ],
+          seed
+        );
       if (temp >= 15)
-        return pick([
-          "Behagligt: gå ut och låtsas vara aktiv, folk tror dig.",
-          "Skön temperatur — jackan får vila och humöret får en chans.",
-        ]);
+        return pickDeterministic(
+          [
+            "🙂 Behagligt: gå ut och låtsas vara aktiv.",
+            "🧥 Skön temperatur — jackan får vila.",
+          ],
+          seed
+        );
       if (temp >= 10)
-        return pick([
-          "Krispigt och klart: tunn jacka krävs, optimism valfri.",
-          "Frisk luft och sol — men ta ändå med en extra tröja, bara i fall.",
-        ]);
-      return pick([
-        "Kallt men klart: solskenet försöker trösta dig, uppskatta det.",
-        "Klart och kyligt — kaffe rekommenderas som överlevnadsstrategi.",
-      ]);
+        return pickDeterministic(
+          [
+            "🍃 Krispigt och klart: tunn jacka krävs.",
+            "☀️ Frisk luft — ta med en extra tröja.",
+          ],
+          seed
+        );
+      return pickDeterministic(
+        [
+          "🌤️ Kallt men klart: solskenet tröstar.",
+          "☕ Klart och kyligt — kaffe rekommenderas.",
+        ],
+        seed
+      );
     }
-    return "Soligt: njut eller låtsas göra det, valet är ditt.";
+    return "☀️ Soligt: njut eller låtsas göra det, valet är ditt.";
   }
 
   // Mulet
   if (s.includes("cloud") || s.includes("overcast")) {
-    return pick([
-      "Mulet: perfekt väder för inre monolog och dramatisk stirrande ut genom fönstret.",
-      "Grått och neutralt — som kaffet du glömde värma.",
-      "Molnigt: solens favorit-tidsinställda paus.",
-    ]);
+    return pickDeterministic(
+      [
+        "☁️ Mulet: perfekt väder för inre monolog.",
+        "☁️ Grått och neutralt — som kaffet du glömde värma.",
+        "🌥️ Molnigt: solens favorit-paus.",
+      ],
+      seed
+    );
   }
 
   // Vindigt
   if (s.includes("wind") || s.includes("breezy") || s.includes("gale")) {
-    return pick([
-      "Blåsigt: hårfixaren tappar jobbet idag.",
-      "Stark vind: håll i hatten och dina tvivel.",
-      "Vinden är på språng — kanske försöker den blåsa bort dina planer.",
-    ]);
+    return pickDeterministic(
+      [
+        "💨 Blåsigt: hårfixaren tappar jobbet.",
+        "🌀 Stark vind: håll i hatten.",
+      ],
+      seed
+    );
   }
 
   // Kallt
   if (typeof temp === "number" && temp <= 0) {
-    return pick([
-      "Under noll: ditt ansikte kommer att uttrycka ånger senare.",
-      "Minusgrader: dags att låtsas att kyla är karaktärsbildande.",
-      "Frostigt — att ta på sig fler lager än nödvändigt är helt acceptabelt.",
-    ]);
+    return pickDeterministic(
+      [
+        "🥶 Under noll: ditt ansikte ångrar det senare.",
+        "🧊 Minusgrader: låtsas att kyla är karaktärsbildande.",
+      ],
+      seed
+    );
   }
 
-  // Default / neutral
-  return pick([
-    "Väderstatus: tillräckligt mediokert. Fortsätt som vanligt.",
-    "Mediokert väder: varken spektakulärt eller värt att rapportera för dramatikens skull.",
-    "Vädret gör sitt, du gör ditt. Vindarna säkert applåderar svagt.",
-  ]);
+  // Default
+  return pickDeterministic(
+    [
+      "🤷 Väderstatus: mediokert. Fortsätt som vanligt.",
+      "😐 Mediokert väder: varken spektakulärt.",
+    ],
+    seed
+  );
 }
 
 export default function WeatherComment({ temp, summary }: Props) {
-  // DEBUG: log when the component mounts/updates so you can verify it renders
   React.useEffect(() => {
-    console.log("WeatherComment mounted/updated", { temp, summary });
+    // optional debug: console.debug("WeatherComment mounted", { temp, summary });
   }, [temp, summary]);
 
   return (
     <div className="weather-comment" role="note" aria-live="polite">
-      <div className="wc-card">
-        {/* Accent bar */}
-        <div className="wc-accent" aria-hidden />
-
-        <div
-          style={{ display: "flex", flexDirection: "column", width: "100%" }}
-        >
-          <div className="wc-title">
-            <strong>Kommentar</strong>
-          </div>
-
+      <div
+        className="wc-card"
+        style={{ display: "flex", gap: 12, alignItems: "center" }}
+      >
+        <div style={{ flex: 1 }}>
           {/* Kommentar på egen rad med pratbubbla-emoji */}
-          <div className="wc-bubble">
-            <p className="wc-text">{pickComment(temp, summary)}</p>
+          {/* Mörk bakgrund + vit text för bättre läsbarhet */}
+          <div
+            className="wc-bubble"
+            style={{
+              background: "#0077C0",
+              padding: "8px 12px",
+              borderRadius: 8,
+            }}
+          >
+            <p
+              className="wc-text"
+              style={{ margin: 0, fontSize: 13, color: "#FFFFFF" }}
+            >
+              {pickComment(temp, summary)}
+            </p>
           </div>
         </div>
       </div>

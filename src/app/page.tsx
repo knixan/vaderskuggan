@@ -84,8 +84,12 @@ function formatDateTimeShort(iso?: string) {
 }
 
 // Ny: Hitta (eller närmaste) post för varje dag kl 12 för n dagar framåt
-function getNextDaysMidday(timeseries: any[] = [], days = 10) {
-  const out: any[] = [];
+// Justera typer så vi undviker `any` eslint-regeln
+function getNextDaysMidday(
+  timeseries: Record<string, unknown>[] = [],
+  days = 10
+) {
+  const out: Record<string, unknown>[] = [];
   const now = new Date();
   for (let i = 0; i < days; i++) {
     const target = new Date(
@@ -96,10 +100,12 @@ function getNextDaysMidday(timeseries: any[] = [], days = 10) {
       0,
       0
     );
-    // Filtrera poster som är samma kalendardag
+
     const sameDay = timeseries.filter((s) => {
       try {
-        const d = new Date(s.validTime);
+        const d = new Date(
+          String((s as Record<string, unknown>).validTime ?? "")
+        );
         return (
           d.getFullYear() === target.getFullYear() &&
           d.getMonth() === target.getMonth() &&
@@ -112,11 +118,18 @@ function getNextDaysMidday(timeseries: any[] = [], days = 10) {
 
     if (sameDay.length === 0) continue;
 
-    // Välj posten som ligger närmast 12:00 (minsta timdiff)
     let best = sameDay[0];
-    let bestDiff = Math.abs(new Date(best.validTime).getHours() - 12);
+    let bestDiff = Math.abs(
+      new Date(
+        String((best as Record<string, unknown>).validTime ?? "")
+      ).getHours() - 12
+    );
     for (const s of sameDay) {
-      const diff = Math.abs(new Date(s.validTime).getHours() - 12);
+      const diff = Math.abs(
+        new Date(
+          String((s as Record<string, unknown>).validTime ?? "")
+        ).getHours() - 12
+      );
       if (diff < bestDiff) {
         best = s;
         bestDiff = diff;
@@ -782,116 +795,132 @@ export default async function Page({
                     gap: 12,
                   }}
                 >
-                  {tenDayMidday.map((s: any, idx: number) => (
-                    <div
-                      key={idx}
-                      style={{
-                        backgroundColor: "#FFFFFF",
-                        borderRadius: 12,
-                        padding: 16,
-                        border: "1px solid #E8F7FF",
-                        boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 16,
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 4,
-                        }}
-                      >
+                  {tenDayMidday.map(
+                    (s: Record<string, unknown>, idx: number) => {
+                      const ts = s;
+                      const validTime = String(ts.validTime ?? "");
+                      const tempVal =
+                        typeof ts.temp === "number"
+                          ? (ts.temp as number)
+                          : Number(ts.temp ?? NaN);
+                      const summary = String(ts.summary ?? "");
+                      return (
                         <div
+                          key={idx}
                           style={{
-                            fontSize: 13,
-                            color: "#1D242B",
-                            opacity: 0.8,
+                            backgroundColor: "#FFFFFF",
+                            borderRadius: 12,
+                            padding: 16,
+                            border: "1px solid #E8F7FF",
+                            boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 16,
                           }}
                         >
-                          {formatDateShort(s.validTime)}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 12,
-                            color: "#1D242B",
-                            opacity: 0.7,
-                          }}
-                        >
-                          {formatTime(s.validTime)}
-                        </div>
-                      </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 4,
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontSize: 13,
+                                color: "#1D242B",
+                                opacity: 0.8,
+                              }}
+                            >
+                              {formatDateShort(s.validTime)}
+                            </div>
+                            <div
+                              style={{
+                                fontSize: 12,
+                                color: "#1D242B",
+                                opacity: 0.7,
+                              }}
+                            >
+                              {formatTime(s.validTime)}
+                            </div>
+                          </div>
 
-                      <div style={{ fontSize: 48, lineHeight: 1 }}>
-                        {getWeatherEmoji(s.summary)}
-                      </div>
+                          <div style={{ fontSize: 48, lineHeight: 1 }}>
+                            {getWeatherEmoji(s.summary)}
+                          </div>
 
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <div
-                          style={{
-                            fontSize: 24,
-                            fontWeight: 700,
-                            color: "#0077C0",
-                            marginBottom: 4,
-                          }}
-                        >
-                          {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 14,
-                            color: "#1D242B",
-                            opacity: 0.85,
-                          }}
-                        >
-                          {s.summary}
-                        </div>
-                      </div>
+                          <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                          >
+                            <div
+                              style={{
+                                fontSize: 24,
+                                fontWeight: 700,
+                                color: "#0077C0",
+                                marginBottom: 4,
+                              }}
+                            >
+                              {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
+                            </div>
+                            <div
+                              style={{
+                                fontSize: 14,
+                                color: "#1D242B",
+                                opacity: 0.85,
+                              }}
+                            >
+                              {s.summary}
+                            </div>
+                          </div>
 
-                      <div
-                        style={{
-                          marginLeft: "auto",
-                          textAlign: "right",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 6,
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: 12,
-                            color: "#1D242B",
-                            opacity: 0.7,
-                          }}
-                        >
-                          Känns som
+                          <div
+                            style={{
+                              marginLeft: "auto",
+                              textAlign: "right",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 6,
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontSize: 12,
+                                color: "#1D242B",
+                                opacity: 0.7,
+                              }}
+                            >
+                              Känns som
+                            </div>
+                            <div
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 600,
+                                color: "#1D242B",
+                              }}
+                            >
+                              {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
+                            </div>
+                            <div
+                              style={{
+                                fontSize: 13,
+                                color: "#1D242B",
+                                opacity: 0.85,
+                              }}
+                            >
+                              Nederbörd:{" "}
+                              <strong>{s.precipitationMean ?? "—"} mm</strong>
+                            </div>
+                            <div>
+                              <WeatherComment
+                                temp={s.temp}
+                                summary={s.summary}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div
-                          style={{
-                            fontSize: 14,
-                            fontWeight: 600,
-                            color: "#1D242B",
-                          }}
-                        >
-                          {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
-                        </div>
-                        <div
-                          style={{
-                            fontSize: 13,
-                            color: "#1D242B",
-                            opacity: 0.85,
-                          }}
-                        >
-                          Nederbörd:{" "}
-                          <strong>{s.precipitationMean ?? "—"} mm</strong>
-                        </div>
-                        <div>
-                          <WeatherComment temp={s.temp} summary={s.summary} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                      );
+                    }
+                  )}
                 </div>
               </div>
             )}
