@@ -1,7 +1,7 @@
 import { getWeatherByLocation } from "./actions/weather";
 import Image from "next/image";
 import WeatherComment from "../components/comments";
-import { Location } from "./type/types";
+import { Location, Series } from "./type/types";
 
 // Helper function for wind direction
 function getWindDirection(degrees: number): string {
@@ -84,12 +84,8 @@ function formatDateTimeShort(iso?: string) {
 }
 
 // Ny: Hitta (eller närmaste) post för varje dag kl 12 för n dagar framåt
-// Justera typer så vi undviker `any` eslint-regeln
-function getNextDaysMidday(
-  timeseries: Record<string, unknown>[] = [],
-  days = 10
-) {
-  const out: Record<string, unknown>[] = [];
+function getNextDaysMidday(timeseries: Series[] = [], days = 10): Series[] {
+  const out: Series[] = [];
   const now = new Date();
   for (let i = 0; i < days; i++) {
     const target = new Date(
@@ -103,9 +99,7 @@ function getNextDaysMidday(
 
     const sameDay = timeseries.filter((s) => {
       try {
-        const d = new Date(
-          String((s as Record<string, unknown>).validTime ?? "")
-        );
+        const d = new Date(s.validTime);
         return (
           d.getFullYear() === target.getFullYear() &&
           d.getMonth() === target.getMonth() &&
@@ -119,17 +113,9 @@ function getNextDaysMidday(
     if (sameDay.length === 0) continue;
 
     let best = sameDay[0];
-    let bestDiff = Math.abs(
-      new Date(
-        String((best as Record<string, unknown>).validTime ?? "")
-      ).getHours() - 12
-    );
+    let bestDiff = Math.abs(new Date(best.validTime).getHours() - 12);
     for (const s of sameDay) {
-      const diff = Math.abs(
-        new Date(
-          String((s as Record<string, unknown>).validTime ?? "")
-        ).getHours() - 12
-      );
+      const diff = Math.abs(new Date(s.validTime).getHours() - 12);
       if (diff < bestDiff) {
         best = s;
         bestDiff = diff;
@@ -795,29 +781,21 @@ export default async function Page({
                     gap: 12,
                   }}
                 >
-                  {tenDayMidday.map(
-                    (s: Record<string, unknown>, idx: number) => {
-                      const ts = s;
-                      const validTime = String(ts.validTime ?? "");
-                      const tempVal =
-                        typeof ts.temp === "number"
-                          ? (ts.temp as number)
-                          : Number(ts.temp ?? NaN);
-                      const summary = String(ts.summary ?? "");
-                      return (
-                        <div
-                          key={idx}
-                          style={{
-                            backgroundColor: "#FFFFFF",
-                            borderRadius: 12,
-                            padding: 16,
-                            border: "1px solid #E8F7FF",
-                            boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 16,
-                          }}
-                        >
+                  {tenDayMidday.map((s: Series, idx: number) => {
+                    return (
+                      <div
+                        key={idx}
+                        style={{
+                          backgroundColor: "#FFFFFF",
+                          borderRadius: 12,
+                          padding: 16,
+                          border: "1px solid #E8F7FF",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 16,
+                        }}
+                      >
                           <div
                             style={{
                               display: "flex",

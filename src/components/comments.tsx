@@ -219,7 +219,6 @@ export default function WeatherComment({ temp, summary }: Props) {
         className="wc-card"
         style={{ display: "flex", gap: 12, alignItems: "center" }}
       >
-        <div style={{ fontSize: 20, lineHeight: 1 }}>💬</div>
         <div style={{ flex: 1 }}>
           {/* Kommentar på egen rad med pratbubbla-emoji */}
           {/* Mörk bakgrund + vit text för bättre läsbarhet */}
