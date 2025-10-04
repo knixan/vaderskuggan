@@ -796,109 +796,105 @@ export default async function Page({
                           gap: 16,
                         }}
                       >
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 4,
+                          }}
+                        >
                           <div
                             style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 4,
+                              fontSize: 13,
+                              color: "#1D242B",
+                              opacity: 0.8,
                             }}
                           >
-                            <div
-                              style={{
-                                fontSize: 13,
-                                color: "#1D242B",
-                                opacity: 0.8,
-                              }}
-                            >
-                              {formatDateShort(s.validTime)}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: 12,
-                                color: "#1D242B",
-                                opacity: 0.7,
-                              }}
-                            >
-                              {formatTime(s.validTime)}
-                            </div>
+                            {formatDateShort(s.validTime)}
                           </div>
-
-                          <div style={{ fontSize: 48, lineHeight: 1 }}>
-                            {getWeatherEmoji(s.summary)}
-                          </div>
-
-                          <div
-                            style={{ display: "flex", flexDirection: "column" }}
-                          >
-                            <div
-                              style={{
-                                fontSize: 24,
-                                fontWeight: 700,
-                                color: "#0077C0",
-                                marginBottom: 4,
-                              }}
-                            >
-                              {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: 14,
-                                color: "#1D242B",
-                                opacity: 0.85,
-                              }}
-                            >
-                              {s.summary}
-                            </div>
-                          </div>
-
                           <div
                             style={{
-                              marginLeft: "auto",
-                              textAlign: "right",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 6,
+                              fontSize: 12,
+                              color: "#1D242B",
+                              opacity: 0.7,
                             }}
                           >
-                            <div
-                              style={{
-                                fontSize: 12,
-                                color: "#1D242B",
-                                opacity: 0.7,
-                              }}
-                            >
-                              Känns som
-                            </div>
-                            <div
-                              style={{
-                                fontSize: 14,
-                                fontWeight: 600,
-                                color: "#1D242B",
-                              }}
-                            >
-                              {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
-                            </div>
-                            <div
-                              style={{
-                                fontSize: 13,
-                                color: "#1D242B",
-                                opacity: 0.85,
-                              }}
-                            >
-                              Nederbörd:{" "}
-                              <strong>{s.precipitationMean ?? "—"} mm</strong>
-                            </div>
-                            <div>
-                              <WeatherComment
-                                temp={s.temp}
-                                summary={s.summary}
-                              />
-                            </div>
+                            {formatTime(s.validTime)}
                           </div>
                         </div>
-                      );
-                    }
-                  )}
+
+                        <div style={{ fontSize: 48, lineHeight: 1 }}>
+                          {getWeatherEmoji(s.summary)}
+                        </div>
+
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 24,
+                              fontWeight: 700,
+                              color: "#0077C0",
+                              marginBottom: 4,
+                            }}
+                          >
+                            {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 14,
+                              color: "#1D242B",
+                              opacity: 0.85,
+                            }}
+                          >
+                            {s.summary}
+                          </div>
+                        </div>
+
+                        <div
+                          style={{
+                            marginLeft: "auto",
+                            textAlign: "right",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 6,
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: "#1D242B",
+                              opacity: 0.7,
+                            }}
+                          >
+                            Känns som
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 14,
+                              fontWeight: 600,
+                              color: "#1D242B",
+                            }}
+                          >
+                            {typeof s.temp === "number" ? `${s.temp}°C` : "—"}
+                          </div>
+                          <div
+                            style={{
+                              fontSize: 13,
+                              color: "#1D242B",
+                              opacity: 0.85,
+                            }}
+                          >
+                            Nederbörd:{" "}
+                            <strong>{s.precipitationMean ?? "—"} mm</strong>
+                          </div>
+                          <div>
+                            <WeatherComment temp={s.temp} summary={s.summary} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
