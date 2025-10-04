@@ -46,6 +46,36 @@ function getWeatherEmoji(summary: string): string {
   return "🌥️";
 }
 
+// Translate English weather summary to Swedish
+function translateSummary(summary: string): string {
+  const s = (summary || "").toLowerCase().trim();
+  if (s === "clear sky") return "Klar himmel";
+  if (s === "nearly clear sky") return "Nästan klar himmel";
+  if (s === "halfclear sky") return "Halvklart väder";
+  if (s === "variable cloudiness") return "Växlande molnighet";
+  if (s === "cloudy sky") return "Molnigt väder";
+  if (s === "overcast") return "Mulet";
+  if (s === "fog") return "Dimma";
+  if (s === "mist") return "Dis";
+  if (s === "rain") return "Regn";
+  if (s === "rain showers") return "Regnskurar";
+  if (s === "heavy rain") return "Kraftigt regn";
+  if (s === "thunder") return "Åska";
+  if (s === "thunderstorm") return "Åskväder";
+  if (s === "snow") return "Snö";
+  if (s === "snow showers") return "Snöskurar";
+  if (s === "heavy snow") return "Kraftig snö";
+  if (s === "sleet") return "Snöblandat regn";
+  if (s === "hail") return "Hagel";
+  if (s === "light rain") return "Lätt regn";
+  if (s === "drizzle") return "Duggregn";
+  if (s === "freezing rain") return "Underkylt regn";
+  if (s === "partly cloudy") return "Delvis molnigt";
+  if (s === "mostly cloudy") return "Mestadels molnigt";
+  // Fallback: returnera original om ingen översättning finns
+  return summary;
+}
+
 // Format ISO date/time strings into readable Swedish date/time
 function formatTime(iso?: string) {
   if (!iso) return "";
@@ -192,10 +222,10 @@ export default async function Page({
       style={{
         backgroundColor: "#FAFAFA",
         color: "#1D242B",
-        minHeight: "100vh",
         padding: "0",
         boxSizing: "border-box",
         fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        flex: 1,
       }}
     >
       {/* Header Section */}
@@ -618,9 +648,9 @@ export default async function Page({
                         color: "#1D242B",
                       }}
                       aria-hidden="false"
-                      title={s.summary}
+                      title={translateSummary(s.summary)}
                     >
-                      <span role="img" aria-label={s.summary}>
+                      <span role="img" aria-label={translateSummary(s.summary)}>
                         {getWeatherEmoji(s.summary)}
                       </span>
                     </div>
@@ -847,7 +877,7 @@ export default async function Page({
                               opacity: 0.85,
                             }}
                           >
-                            {s.summary}
+                            {translateSummary(s.summary)}
                           </div>
                         </div>
 
