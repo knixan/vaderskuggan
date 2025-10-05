@@ -71,86 +71,115 @@ The application fetches weather data from **SMHI’s Open Data API** (Swedish Me
    ```bash
    git clone https://github.com/knixan/vaderskuggan.git
    cd vaderskuggan
-Install dependencies
+   ```
 
-bash
-Kopiera kod
-npm install
-Start the development server
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-bash
-Kopiera kod
-npm run dev
-Open your browser
-Visit http://localhost:3000
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-Build for Production
-bash
-Kopiera kod
+4. **Open your browser**
+   Visit `http://localhost:3000`
+
+### Build for Production
+
+```bash
 npm run build
 npm start
-Tech Stack
-Framework: Next.js 15 with App Router
+```
 
-Language: TypeScript
+---
 
-Styling: Tailwind CSS 4
+## Tech Stack
 
-Icons: React Icons
+- **Framework:** Next.js 15 with App Router
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS 4
+- **Icons:** React Icons
+- **API:** SMHI Open Data API
+- **Build Tool:** Turbopack
+
+---
 
 API: SMHI Open Data API
 
 Build Tool: Turbopack
 
-Project Structure
-python
-Kopiera kod
-src/
-├── app/
-│   ├── actions/
-│   │   └── weather.ts          # Weather data fetching logic
-│   ├── type/
-│   │   └── types.ts            # TypeScript type definitions
-│   ├── globals.css             # Global styles
-│   ├── layout.tsx              # App layout component
-│   └── page.tsx                # Main page component
-└── components/
-    ├── comments.tsx            # Weather comment component
-    └── footer.tsx              # Footer component
-Customization
-Weather Logic: Edit src/app/actions/weather.ts to adjust data fetching
+## Project Structure
 
-Types: Update src/app/type/types.ts for schema changes
+```
+vaderskuggan/
+├── public/
+│   ├── image/
+│   │   └── loggo.png
+│   ├── screenshot-desktop.png
+│   └── screenshot-mobile.png
+├── src/
+│   ├── app/
+│   │   ├── actions/
+│   │   │   └── weather.ts          # Weather data fetching logic
+│   │   ├── type/
+│   │   │   └── types.ts            # TypeScript type definitions
+│   │   ├── favicon.ico
+│   │   ├── globals.css             # Global styles
+│   │   ├── layout.tsx              # App layout component
+│   │   └── page.tsx                # Main page component
+│   └── components/
+│       ├── comments.tsx            # Weather comment component
+│       └── footer.tsx              # Footer component
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── README.md
+└── tsconfig.json
+```
 
-Main Interface: Modify src/app/page.tsx for layout updates
+---
 
-Comments: Customize src/components/comments.tsx for comment handling
+## Customization
 
-API Information
+- **Weather Logic:** Edit `src/app/actions/weather.ts` to adjust data fetching
+- **Types:** Update `src/app/type/types.ts` for schema changes
+- **Main Interface:** Modify `src/app/page.tsx` for layout updates
+- **Comments:** Customize `src/components/comments.tsx` for comment handling
+
+---
+
+---
+
+## API Information
+
 This application uses SMHI's Open Data API to fetch weather information.
-Refer to SMHI’s documentation for details on:
+Refer to SMHI's documentation for details on:
 
-Endpoints and parameters
+- Endpoints and parameters
+- Usage limitations and terms
+- Attribution requirements
 
-Usage limitations and terms
+---
 
-Attribution requirements
+## License
 
-License
 This project was created by Josefine Eriksson.
 
-Attribution
-Weather Data: SMHI (Swedish Meteorological and Hydrological Institute)
+### Attribution
 
-Development Support: Alexander, Lexicon Linköping
+- **Weather Data:** SMHI (Swedish Meteorological and Hydrological Institute)
+- **Development Support:** Alexander, Lexicon Linköping
+- **Design & Development:** Kod och Design
 
-Design & Development: Kod och Design
+### Author
 
-Author
-Josefine Eriksson
+**Josefine Eriksson**
+- Website: [kodochdesign.se](https://kodochdesign.se)
+- GitHub: [@knixan](https://github.com/knixan)
 
-Website: kodochdesign.se
-
-GitHub: @knixan
-
-<p align="center"> Developed by <a href="https://kodochdesign.se">Kod och Design</a> in Sweden </p> ```
+<p align="center">
+  Developed by <a href="https://kodochdesign.se">Kod och Design</a> in Sweden
+</p> ```
