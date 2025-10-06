@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LocationShareClient() {
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
@@ -10,7 +11,9 @@ export default function LocationShareClient() {
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const getLocation = () => {
+  const router = useRouter();
+
+  const getLocation = useCallback(() => {
     setError(null);
     setLoading(true);
     if (!navigator.geolocation) {
@@ -25,6 +28,13 @@ export default function LocationShareClient() {
           lng: position.coords.longitude,
         });
         setLoading(false);
+        try {
+          // Navigera till root med location query så server-sidan kan hämta väder
+          const q = `${position.coords.latitude},${position.coords.longitude}`;
+          router.push(`/?location=${encodeURIComponent(q)}`);
+        } catch {
+          // ignore navigation errors
+        }
       },
       (err) => {
         setError(err.message || "Kunde inte hämta position.");
@@ -32,7 +42,7 @@ export default function LocationShareClient() {
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
-  };
+  }, [router]);
 
   // Visa confirm-dialog automatiskt när komponenten mountas.
   // OBS: detta kommer direkt visa browserns permissions-dialog om användaren accepterar.
@@ -48,7 +58,7 @@ export default function LocationShareClient() {
     } catch {
       // I vissa körmiljöer kan window vara undefined — ignore
     }
-  }, []);
+  }, [getLocation]);
 
   const share = async () => {
     if (!coords) return;
