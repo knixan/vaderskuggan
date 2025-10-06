@@ -124,23 +124,23 @@ export default function LocationShareClient() {
         disabled={loading}
         aria-label="Hämta min position"
         style={{
-          background: loading ? "#89D4F5" : "#0077C0",
-          color: "#fff",
-          border: "none",
-          padding: "10px 18px",
-          borderRadius: 24,
-          fontSize: 14,
-          fontWeight: 600,
+          background: loading ? "#E3EEF4" : "#E8F4FA",
+          color: "#164559",
+          border: "1px solid #C7E2EE",
+          padding: "6px 14px",
+          borderRadius: 8,
+          fontSize: 13,
+          fontWeight: 500,
           cursor: loading ? "progress" : "pointer",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.12)",
+          boxShadow: "none",
           display: "inline-flex",
           alignItems: "center",
-          gap: 8,
-          letterSpacing: 0.3,
-          transition: "background .2s",
+          gap: 6,
+          letterSpacing: 0.2,
+          transition: "background .15s, border-color .15s",
         }}
       >
-        {loading ? "⏳ Hämtar…" : "📡 Dela min position"}
+        {loading ? "Hämtar…" : "Dela min position"}
       </button>
 
       {/* Felmeddelande */}
@@ -165,20 +165,21 @@ export default function LocationShareClient() {
       {permissionDenied && !coords && (
         <div
           style={{
-            marginTop: 14,
-            padding: 14,
-            background: "linear-gradient(135deg,#FFF4D7,#FFF9EC)",
-            border: "1px solid #F4DC9B",
-            borderRadius: 12,
-            fontSize: 13,
-            lineHeight: 1.45,
-            color: "#5B4600",
-            boxShadow: "0 3px 8px rgba(0,0,0,0.06)",
+            marginTop: 10,
+            padding: 10,
+            background: "#F9FAFB",
+            border: "1px solid #E5E8EA",
+            borderRadius: 8,
+            fontSize: 12.5,
+            lineHeight: 1.4,
+            color: "#45535A",
           }}
         >
-          <strong style={{ fontSize: 14 }}>Platstjänst inaktiverad</strong>
-          <div style={{ marginTop: 6 }}>
-            Ange en plats ovan eller aktivera behörighet och försök igen.
+          <div style={{ fontWeight: 600, fontSize: 12.5 }}>
+            Platstjänst inaktiverad
+          </div>
+          <div style={{ marginTop: 4, opacity: 0.85 }}>
+            Ange en plats i sökfältet eller aktivera behörighet och försök igen.
           </div>
           <button
             type="button"
@@ -190,14 +191,14 @@ export default function LocationShareClient() {
               getLocation();
             }}
             style={{
-              marginTop: 10,
-              background: "#0077C0",
-              color: "#fff",
-              border: "none",
-              padding: "8px 14px",
-              borderRadius: 18,
-              fontSize: 13,
-              fontWeight: 600,
+              marginTop: 8,
+              background: "#EEF6FA",
+              color: "#1F5062",
+              border: "1px solid #D0E4EC",
+              padding: "4px 10px",
+              borderRadius: 6,
+              fontSize: 12,
+              fontWeight: 500,
               cursor: "pointer",
             }}
           >
