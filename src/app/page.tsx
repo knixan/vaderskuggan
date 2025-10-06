@@ -332,6 +332,10 @@ export default async function Page({
               Sök
             </button>
           </form>
+          {/* Plats-komponent direkt under sökfältet */}
+          <div style={{ marginTop: 12 }}>
+            <LocationShareClient />
+          </div>
         </div>
       </header>
 
@@ -941,7 +945,7 @@ export function LocationPage() {
   return (
     <main style={{ padding: 20 }}>
       <h1>Väder — dela din position</h1>
-      <LocationShareClient />
+      {/* (Flyttad upp under headern) */}
     </main>
   );
 }

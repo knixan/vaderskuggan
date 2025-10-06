@@ -38,6 +38,7 @@ The application fetches weather data from **SMHI’s Open Data API** (Swedish Me
 - **Interactive Comments** – Weather-related commentary and insights
 - **High Performance** – Built with Next.js and Turbopack for optimal speed
 - **Modern UI** – Clean and minimal design with Tailwind CSS
+- **Optional Location Detection** – User‑initiated geolocation to instantly load local weather (privacy‑friendly; no position stored server-side)
 
 ---
 
@@ -102,6 +103,57 @@ The application fetches weather data from **SMHI’s Open Data API** (Swedish Me
 npm run build
 npm start
 ```
+
+---
+
+## Location & Privacy
+
+The app supports an optional client‑side geolocation flow to quickly load weather for the user's current position.
+
+### How it works
+
+1. The user clicks “Dela min position” (Share my location).
+2. The browser’s native permission prompt is shown (no custom overlay).
+3. On success, the latitude and longitude are appended to the URL as a query parameter: `?location=LAT,LON`.
+4. The server action (`getWeatherByLocation`) uses those coordinates to fetch weather.
+5. A minimal local cache (`localStorage`) stores:
+
+- `lastLocation` – last successful `lat,lng` pair
+- `locationAsked` – whether the prompt has already been triggered in this browser
+- `locationDenied` – whether the user previously denied access (to avoid re‑prompt loops)
+
+### No server persistence
+
+- Coordinates are never persisted in a database.
+- Only the query string and localStorage (in the user’s browser) are used.
+- Removing the query or clearing site data resets the state.
+
+### Fallback Behavior
+
+| Scenario                        | Result                                              |
+| ------------------------------- | --------------------------------------------------- |
+| First click + allow             | Weather loads for current coordinates               |
+| Deny permission                 | Informational panel shown; user can search manually |
+| Reload after allow              | Last coordinates auto‑applied (no new prompt)       |
+| Reload after deny               | No re‑prompt; manual action required                |
+| Missing / corrupt cached coords | Fresh geolocation attempt                           |
+
+### Accessibility & UX Notes
+
+- Uses a single clear button for user intent (no auto‑prompt on mere visit).
+- Error messages are concise and semantic (`role="alert"`).
+- Graceful degradation if `navigator.geolocation` is unavailable.
+
+### Extending Location Logic
+
+Ideas you can add:
+
+- Reverse geocoding (e.g. Nominatim) to show human readable place name.
+- Map links (open in OpenStreetMap / Google Maps).
+- Dark mode adaptations for geolocation UI.
+- Persist “banner dismissed” state (currently removed for minimalism).
+
+---
 
 ---
 
