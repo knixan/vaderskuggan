@@ -22,18 +22,30 @@ export default function LocationShareClient() {
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      async (position) => {
         setCoords({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
         setLoading(false);
         try {
+          // Reverse geocode för att få stadens namn
+          const reverseResponse = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&zoom=10&addressdetails=1`
+          );
+          const reverseData = await reverseResponse.json();
+          const city =
+            reverseData.address?.city ||
+            reverseData.address?.town ||
+            reverseData.address?.village ||
+            reverseData.display_name?.split(",")[0] ||
+            `${position.coords.latitude},${position.coords.longitude}`;
           // Navigera till root med location query så server-sidan kan hämta väder
+          router.push(`/?location=${encodeURIComponent(city)}`);
+        } catch {
+          // Om reverse geocode misslyckas, använd koordinater
           const q = `${position.coords.latitude},${position.coords.longitude}`;
           router.push(`/?location=${encodeURIComponent(q)}`);
-        } catch {
-          // ignore navigation errors
         }
       },
       (err) => {
@@ -48,12 +60,10 @@ export default function LocationShareClient() {
   // OBS: detta kommer direkt visa browserns permissions-dialog om användaren accepterar.
   useEffect(() => {
     try {
-      const alreadyAsked = false; // ändra till localStorage-check om du vill spara användarens val
+      const alreadyAsked = localStorage.getItem("locationAsked") === "true";
       if (!alreadyAsked) {
-        const ok = window.confirm(
-          "Vill du dela din position för att få lokal väderinformation?"
-        );
-        if (ok) getLocation();
+        localStorage.setItem("locationAsked", "true");
+        getLocation();
       }
     } catch {
       // I vissa körmiljöer kan window vara undefined — ignore
@@ -100,12 +110,7 @@ export default function LocationShareClient() {
     <div style={{ maxWidth: 420 }}>
       <button
         type="button"
-        onClick={() => {
-          const ok = window.confirm(
-            "Vill du dela din position för att få lokal väderinformation?"
-          );
-          if (ok) getLocation();
-        }}
+        onClick={getLocation}
         disabled={loading}
         aria-label="Hämta min position"
       >
