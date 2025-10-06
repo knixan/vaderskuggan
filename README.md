@@ -31,17 +31,23 @@ The application fetches weather data from **SMHI’s Open Data API** (Swedish Me
 
 ## Features
 
-- **Current Temperature Display** – Real-time temperature and conditions  
-- **Comprehensive Weather Metrics** – Humidity, air pressure, visibility, and cloud cover  
-- **Tomorrow’s Forecast** – Dedicated card for the next day’s weather  
-- **Responsive Design** – Optimized for both desktop and mobile devices  
-- **Interactive Comments** – Weather-related commentary and insights  
-- **High Performance** – Built with Next.js and Turbopack for optimal speed  
-- **Modern UI** – Clean and minimal design with Tailwind CSS  
+- **Current Temperature Display** – Real-time temperature and conditions
+- **Comprehensive Weather Metrics** – Humidity, air pressure, visibility, and cloud cover
+- **Tomorrow’s Forecast** – Dedicated card for the next day’s weather
+- **Responsive Design** – Optimized for both desktop and mobile devices
+- **Interactive Comments** – Weather-related commentary and insights
+- **High Performance** – Built with Next.js and Turbopack for optimal speed
+- **Modern UI** – Clean and minimal design with Tailwind CSS
 
 ---
 
 ## Demo
+
+<div align="center">
+  <img src="public/mockup-vaderskuggan.jpg" alt="Mockup" width="600"/>
+  <br/>
+  <em>Desktop View</em>
+</div>
 
 <div align="center">
   <img src="public/screenshot-desktop.png" alt="Desktop Screenshot" width="600"/>
@@ -62,23 +68,27 @@ The application fetches weather data from **SMHI’s Open Data API** (Swedish Me
 ## Getting Started
 
 ### Prerequisites
-- **Node.js** (LTS version recommended)  
+
+- **Node.js** (LTS version recommended)
 - **npm** or **yarn**
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/knixan/vaderskuggan.git
    cd vaderskuggan
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -177,6 +187,7 @@ This project was created by Josefine Eriksson.
 ### Author
 
 **Josefine Eriksson**
+
 - Website: [kodochdesign.se](https://kodochdesign.se)
 - GitHub: [@knixan](https://github.com/knixan)
 
