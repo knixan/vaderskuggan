@@ -21,9 +21,9 @@ export default function Footer() {
         >
           https://kodochdesign.se
         </a>{" "}
-        av Josefine Eriksson Snestil
+        av Josefine Eriksson
       </p>
-      <p style={{ margin: "8px 0 0 0", fontSize: "13px" }}>
+      <p style={{ margin: "8px 0 0 0", fontStyle: "italic", fontSize: "13px" }}>
         Kommentarerna på denna sida är sarkastiska och skapade för att göra
         väderprognosen humoristisk eftersom ingen någonsing är 100% nöjd med
         vädret.
