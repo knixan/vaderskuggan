@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function LocationShareClient() {
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
@@ -34,18 +34,31 @@ export default function LocationShareClient() {
     );
   };
 
+  // Visa confirm-dialog automatiskt när komponenten mountas.
+  // OBS: detta kommer direkt visa browserns permissions-dialog om användaren accepterar.
+  useEffect(() => {
+    try {
+      const alreadyAsked = false; // ändra till localStorage-check om du vill spara användarens val
+      if (!alreadyAsked) {
+        const ok = window.confirm(
+          "Vill du dela din position för att få lokal väderinformation?"
+        );
+        if (ok) getLocation();
+      }
+    } catch {
+      // I vissa körmiljöer kan window vara undefined — ignore
+    }
+  }, []);
+
   const share = async () => {
     if (!coords) return;
     const text = `Latitude: ${coords.lat}\nLongitude: ${coords.lng}`;
-    const mapUrl = `https://www.openstreetmap.org/?mlat=${coords.lat}&mlon=${coords.lng}#map=14/${coords.lat}/${coords.lng}`;
-
     // Försök använda Web Share API först (mobil/modern browser)
     if (navigator.share) {
       try {
         await navigator.share({
           title: "Min position",
-          text: `${text}\n${mapUrl}`,
-          url: mapUrl,
+          text,
         });
         return;
       } catch {
@@ -56,7 +69,7 @@ export default function LocationShareClient() {
     // Försök kopiera till urklipp
     if (navigator.clipboard) {
       try {
-        await navigator.clipboard.writeText(`${text} \n${mapUrl}`);
+        await navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 2500);
         return;
@@ -67,7 +80,7 @@ export default function LocationShareClient() {
 
     // Fallback: prompt så användaren kan kopiera manuellt
     try {
-      window.prompt("Kopiera position", `${text} ${mapUrl}`);
+      window.prompt("Kopiera position", text);
     } catch {
       setError("Kunde inte dela eller kopiera position.");
     }
@@ -121,14 +134,6 @@ export default function LocationShareClient() {
             >
               Dela / kopiera
             </button>
-            <a
-              href={`https://www.openstreetmap.org/?mlat=${coords.lat}&mlon=${coords.lng}#map=14/${coords.lat}/${coords.lng}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: 13 }}
-            >
-              Visa i karta
-            </a>
             {copied && (
               <span style={{ fontSize: 13, color: "green" }}>Kopierad</span>
             )}
