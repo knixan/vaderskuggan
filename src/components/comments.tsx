@@ -33,6 +33,9 @@ function pickComment(temp?: number | null, summary?: string): string {
         "⚡ Åskväder: himlen skriker, och du inser att du glömde stänga fönstret.",
         "🌩️ Storm: perfekt tid att låtsas du är med i en katastroffilm.",
         "🌬️ Vind + åska = gratis frisyrförstörelse.",
+        "⚡ Åska: Zeus är arg igen, och du är i vägen.",
+        "🌩️ Storm: perfekt väder för att ångra alla beslut du tagit utomhus.",
+        "⛈️ Åskväder: naturen påminner dig om att du inte har någon kontroll.",
       ],
       seed
     );
@@ -50,6 +53,10 @@ function pickComment(temp?: number | null, summary?: string): string {
         "💦 Skyfall: paraplyer? Dekorationer. Inte hjälpmedel.",
         "⛵ Så mycket vatten att du borde överväga sjöfartsutbildning.",
         "🌊 Hällregn: naturens sätt att säga 'stanna hemma, din optimist'.",
+        "🌧️ Störtregn: dina skor blev akvarier.",
+        "💦 Regn: vattnet faller snabbare än dina förväntningar på dagen.",
+        "⛈️ Skyfall: paraplyets självmordsväder.",
+        "🌊 Så mycket vatten att du börjar överväga att bygga en ark.",
       ],
       seed
     );
@@ -64,8 +71,11 @@ function pickComment(temp?: number | null, summary?: string): string {
     return pickDeterministic(
       [
         "🌦️ Duggregn: precis tillräckligt för att irritera, men inte för att imponera.",
-        "☔ Lätt regn: som att naturen nysar på dig.",
+        "☔ Lätt regn: som att naturen nyser på dig.",
         "🌧️ Duggregn — perfekt väder för att ifrågasätta livsval och frisyr.",
+        "🌦️ Duggregn: för lite för att stanna hemma, för mycket för att vara torr.",
+        "☔ Lätt regn: naturen är passiv-aggressiv idag.",
+        "🌧️ Duggregn: väder för beslutslösa moln.",
       ],
       seed
     );
@@ -84,6 +94,10 @@ function pickComment(temp?: number | null, summary?: string): string {
         "☃️ Snökaos: kollektivtrafiken tog semester.",
         "🥶 Vitt och kallt — precis som ditt leende på måndagar.",
         "🧤 Snö: dags att leka 'var är mina vantar?'-leken.",
+        "❄️ Snö: alla glömde hur man går plötsligt.",
+        "☃️ Snöfall: naturen renoverar hela stan i vitt – utan tillstånd.",
+        "🥶 Snö: vacker på Instagram, helvete i verkligheten.",
+        "⛄ Snökaos: alla kör som om de precis fått körkort. Idag.",
       ],
       seed
     );
@@ -107,7 +121,10 @@ function pickComment(temp?: number | null, summary?: string): string {
       [
         "🌫️ Dimma: perfekt om du gillar att köra i slow motion.",
         "🌁 Dis: som ett dåligt Snapchat-filter på världen.",
-        "🌀 Dimma: världen på ‘mystiskt läge’.",
+        "🌀 Dimma: världen på 'mystiskt läge'.",
+        "🌫️ Dimma: världen på 240p-upplösning.",
+        "🌁 Dis: perfekt om du vill känna dig som i en budget-skräckfilm.",
+        "🌀 Dimma: GPS:en har panik, och du också.",
       ],
       seed
     );
@@ -122,6 +139,10 @@ function pickComment(temp?: number | null, summary?: string): string {
             "🔥 Hetta: som att bo i en hårtork.",
             "🥵 Solen vill dig personligen illa.",
             "🍦 Allt smälter – inklusive din motivation.",
+            "🔥 Hetta: solen har personliga vendetta mot dig.",
+            "🥵 Så varmt att asfalt blir mjuk – och din vilja att leva också.",
+            "☀️ Hetta: luften är en varm, fuktig kram du inte bad om.",
+            "🌡️ Varmt: du svettas på ställen du inte visste kunde svettas.",
           ],
           seed
         );
@@ -154,6 +175,7 @@ function pickComment(temp?: number | null, summary?: string): string {
           [
             "🍃 Krispigt men soligt: naturen försöker vara trevlig.",
             "☀️ Frisk luft — ta med en extra tröja och lite hopp.",
+            "☀️ Sol och kyla: vädret kan inte bestämma sig, precis som du.",
           ],
           seed
         );
@@ -161,6 +183,8 @@ function pickComment(temp?: number | null, summary?: string): string {
         [
           "☀️ Soligt men kallt: ljus i tunneln, men frost på själen.",
           "❄️ Sol — bara för syns skull.",
+          "❄️ Soligt men kallt: falsk reklam i väderform.",
+          "🌤️ Sol: ljuset ljuger om värmen.",
         ],
         seed
       );
@@ -175,6 +199,10 @@ function pickComment(temp?: number | null, summary?: string): string {
         "☁️ Mulet: himlen har gett upp — precis som du.",
         "🌥️ Molnigt: solen är på obestämd semester.",
         "☁️ Grått, trist och perfekt matchning till din kalender.",
+        "☁️ Mulet: perfekt matchning till din inre känslovärld.",
+        "🌥️ Grått: himlen har gett upp för säsongen.",
+        "☁️ Molnigt: solen ringde in sjuk.",
+        "🌫️ Grått väder: naturen på depressionsläge.",
       ],
       seed
     );
@@ -187,6 +215,10 @@ function pickComment(temp?: number | null, summary?: string): string {
         "💨 Blåsigt: naturens sätt att sabba din frisyr och din dag.",
         "🌀 Vind: håll i hatten, eller låt den flytta hemifrån.",
         "💨 Vinden: gratis ansiktspeeling. Grov version.",
+        "💨 Blåsigt: håret väljer våld idag.",
+        "🌀 Vind: dina planer blåser iväg bokstavligt.",
+        "💨 Storm: naturen använder hårtork på högsta nivån.",
+        "🌬️ Vind: gratis (och smärtsam) exfoliering.",
       ],
       seed
     );
@@ -199,6 +231,10 @@ function pickComment(temp?: number | null, summary?: string): string {
         "🥶 Så kallt att självrespekt fryser till is.",
         "🧊 Minusgrader: för den som älskar smärta i ansiktet.",
         "❄️ Kallt nog att ifrågasätta varför du bor här.",
+        "🥶 Kallt: ansiktet får gratis botox av frosten.",
+        "❄️ Minusgrader: perfekt väder för att ifrågasätta alla livsval.",
+        "🧊 Så kallt att varma tankar inte hjälper.",
+        "☃️ Frysgrader: naturens sätt att säga 'flytta söderut'.",
       ],
       seed
     );
@@ -210,6 +246,9 @@ function pickComment(temp?: number | null, summary?: string): string {
       "🤷 Ingen aning. Vädret verkar lika förvirrat som du.",
       "😐 Varken kul eller katastrof — precis som livet ibland.",
       "🌤️ Mediokert väder: passa på att vara medioker själv.",
+      "🤷 Vädret existerar. Du också. Det är ungefär vad vi vet.",
+      "😐 Väder: det händer, varje dag, oavsett om du vill eller inte.",
+      "🌍 Mediokert: varken dystopi eller utopi, bara trist verklighet.",
     ],
     seed
   );

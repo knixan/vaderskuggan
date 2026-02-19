@@ -2,6 +2,8 @@ import { getWeatherByLocation } from "./actions/weather";
 import Image from "next/image";
 import WeatherComment from "../components/comments";
 import { Location, Series } from "./type/types";
+import React from "react";
+import LocationShareClient from "../components/position";
 
 // Helper function for wind direction
 function getWindDirection(degrees: number): string {
@@ -330,6 +332,10 @@ export default async function Page({
               Sök
             </button>
           </form>
+          {/* Plats-komponent direkt under sökfältet */}
+          <div style={{ marginTop: 12 }}>
+            <LocationShareClient />
+          </div>
         </div>
       </header>
 
@@ -932,5 +938,14 @@ export default async function Page({
         )}
       </main>
     </div>
+  );
+}
+
+export function LocationPage() {
+  return (
+    <main style={{ padding: 20 }}>
+      <h1>Väder — dela din position</h1>
+      {/* (Flyttad upp under headern) */}
+    </main>
   );
 }
