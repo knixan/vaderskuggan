@@ -3,7 +3,7 @@ import Image from "next/image";
 import WeatherComment from "../components/comments";
 import { Location, Series } from "./type/types";
 import React from "react";
-import LocationShareClient from "../components/position";
+import LocationShareClient from "../components/LocationShareClient";
 
 // Helper function for wind direction
 function getWindDirection(degrees: number): string {
